@@ -15,19 +15,3 @@ class WeatherModel {
   }
 }
 
-class SearchWeatherModel {
-  final double lat;
-  final double lon;
-
-  SearchWeatherModel({
-    required this.lat,
-    required this.lon,
-  });
-
-  factory SearchWeatherModel.fromMap(Map<String, dynamic> json) {
-    return SearchWeatherModel(
-      lat: (json['lat'] as num).toDouble(),
-      lon: (json['lon'] as num).toDouble(),
-    );
-  }
-}
