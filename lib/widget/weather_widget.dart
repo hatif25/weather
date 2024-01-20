@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather/models/weather_model.dart';
 import 'package:weather/services/weather.api.dart';
-import 'package:weather/widget/search_widget.dart';
+import 'package:weather/widget/searching_screen.dart';
 
 class WeatherWidget extends StatefulWidget {
   @override
@@ -21,7 +21,8 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   }
 
   Future<void> fetchData() async {
-    if (isLoading) return; // Avoid making a new API call while one is in progress
+    if (isLoading)
+      return; // Avoid making a new API call while one is in progress
     setState(() {
       isLoading = true;
     });
@@ -43,49 +44,71 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.search),
-      //   onPressed: () async {
-      //     await showSearch(
-      //       context: context,
-      //       delegate: CustomSearchDelegate(),
-      //     );
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/weather.jpg'),
+                fit: BoxFit.cover,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    weatherData?.name ?? 'Unknown',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+              color: Colors.white,
+            ),
+            child: Stack(
+              children: [
+                Align(
+                  child: IconButton(
+                    icon: Icon(
+                    Icons.search,
+                    size: 50,
+                    color: Colors.white,
                   ),
-                  Text(
-                    "${weatherData?.temp_c}°C",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                    onPressed: () {
+                      // Handle the onPressed action for the search icon
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchingScreen(),
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
-              width: double.infinity,
-              height: double.infinity,
-    ));
-    
+                  alignment: Alignment.topRight,
+                ),
+                Align(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        weatherData?.name ?? 'Unknown',
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "${weatherData?.temp_c}°C",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+  );
+}
+}
      }   
     
   }
